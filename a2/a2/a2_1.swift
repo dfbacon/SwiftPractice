@@ -1,42 +1,16 @@
-/*
- * Filename: a2_1
- * Author: Daniel Bacon
- * Date: 02 September 2019
- *
- * Copy of programming assignment originally for C++.
- *
- * This is the a2_1 program. The program is designed to approximate
- * a blackjack game, with a single player dealing a hand to themself. The game
- * begins by dealing two cards, then prompting
- * the user for more cards, while tracking and displaying the card
- * total. The values of the cards ranges from 1 to 10 only. If the
- * total of the cards exceeds 21 then the player busts. Player is
- * always prompted to decide to play again.
- *
- * Specifically, the assignment is a review of loops. Aanything more
- * advanced than a loop is not allowed.
- */
-
-import Foundation
-
-let MAX_VALUE = 21
-let PLAY_AGAIN_STRING = "Would you like to play again (Y/N)?"
-let DRAW_AGAIN_STRING = "Would you like another card (Y/N)?"
-
-
-
-func main() -> Void {
-    var playAgain = true
-    
-    while playAgain {
-        playAgain = playGame()
-    }
-}
+//
+//  a2_1.swift
+//  a2
+//
+//  Created by Daniel Bacon on 9/2/19.
+//  Copyright © 2019 Daniel Bacon. All rights reserved.
+//
 
 
 
 func promptPlayer(userString : String) -> Bool {
-    print("\(userString)", terminator: ": ")
+    
+    print(userString, terminator: ": ")
     
     let userResponse = readLine()
     
@@ -49,15 +23,22 @@ func promptPlayer(userString : String) -> Bool {
 
 
 
+func setNewCardValue() -> Int {
+    return Int.random(in: 1 ..< 10)
+}
+
+
+
 func playGame() -> Bool {
+    
     var firstCard, secondCard, cardValue : Int
     var drawCard = true
     
     
-    firstCard = Int.random(in: 0 ..< 10)
+    firstCard = setNewCardValue()
     print("First card is: \(firstCard)")
-
-    secondCard = Int.random(in: 0 ..< 10)
+    
+    secondCard = setNewCardValue()
     print("Second card is: \(secondCard)")
     
     cardValue = firstCard + secondCard
@@ -66,17 +47,25 @@ func playGame() -> Bool {
         print("Total value of your cards is: \(cardValue)")
         
         if cardValue == MAX_VALUE {
-            print("Blackjack! You win!")
+            print("Blackjack! You win!\n")
             break
         }
             
         else if cardValue > MAX_VALUE{
-            print("Bust. You lose.")
+            print("Bust. You lose.\n")
             break
         }
+        
+        drawCard = promptPlayer(userString:
+            "Would you like another card (Y/N)?")
 
-        drawCard = promptPlayer(userString: DRAW_AGAIN_STRING)
+        if drawCard {
+            firstCard = setNewCardValue()
+            print("New card value is: \(firstCard)")
+            cardValue += firstCard
+        }
+        
     }
     
-    return promptPlayer(userString: PLAY_AGAIN_STRING)
+    return promptPlayer(userString: "Would you like to play again (Y/N)?")
 }
